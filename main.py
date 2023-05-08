@@ -62,61 +62,21 @@ class Bot:
         self.target_account_following: List[str] = []
 
     @log_decorator
-    def login(self) -> None:
-        self.driver.get("https://www.instagram.com/")
-        # Wait for the username field to be visible
-        username = WebDriverWait(self.driver, 10).until(
-            EC.visibility_of_element_located((By.NAME, "username"))
-        )
-        username.click()
-        username.send_keys(self.username)
-
-        # Wait for the password field to be visible
-        password = WebDriverWait(self.driver, 10).until(
-            EC.visibility_of_element_located((By.NAME, "password"))
-        )
-        password.click()
-        password.send_keys(self.password)
-        password.send_keys(Keys.ENTER)
-
-        pause()
-
-    @log_decorator
     def get_url(self, url: str) -> None:
         self.driver.get(url)
         pause()
 
     @log_decorator
-    def open_followers_popup(self) -> None:
-        url = f"https://www.instagram.com/{self.target_account}/followers/"
-        self.get_url(url)
-        pause()
-
-    @log_decorator
-    def set_cursor_coordinates(self, x: int, y: int) -> None:
-        ActionChains(self.driver).move_by_offset(x, y).perform()
-        pause()
-
-    @log_decorator
-    def move_crusor_to_center(self) -> None:
-        self.set_cursor_coordinates(0, 0)
-        pause()
-
-    @log_decorator
-    def scroll_down(self) -> None:
-        self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        pause()
-
-    @log_decorator
-    def scroll_up(self) -> None:
-        self.driver.execute_script("window.scrollTo(0, 0);")
-        pause()
-
-    @log_decorator
     def run(self) -> None:
-        self.open_followers_popup()
-        # Wait for the followers popup to be visible
-        ...
+        url = f"https://www.instagram.com/{self.target_account}/"
+        self.get_url(url)
+
+        followers_element = self.driver.find_element(
+            By.XPATH, "//span[@title='followers']"
+        )
+        followers_count = followers_element.get_attribute("title")
+
+        print(followers_count)
 
 
 # Main Function
@@ -125,7 +85,6 @@ if __name__ == "__main__":
     driver.start_driver()
 
     bot = Bot(driver.get_driver())
-    bot.login()
     bot.run()
 
     driver.quit_driver()
