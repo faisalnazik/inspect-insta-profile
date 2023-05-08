@@ -2,10 +2,6 @@ import config
 from utils import pause
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.action_chains import ActionChains
 from decorators import log_decorator
 from typing import List
 
@@ -67,16 +63,21 @@ class Bot:
         pause()
 
     @log_decorator
+    def get_follower_count(self) -> str:
+        elements = self.driver.find_elements(By.CLASS_NAME, "_ac2a")
+        # Get the follower count from the second element
+        follower_count = elements[1].text
+        return follower_count
+
+    @log_decorator
     def run(self) -> None:
         url = f"https://www.instagram.com/{self.target_account}/"
         self.get_url(url)
 
-        followers_element = self.driver.find_element(
-            By.XPATH, "//span[@title='followers']"
-        )
-        followers_count = followers_element.get_attribute("title")
+        follower_count = self.get_follower_count()
 
-        print(followers_count)
+        print(f"Target account: {self.target_account}")
+        print(f"Follower count: {follower_count}")
 
 
 # Main Function

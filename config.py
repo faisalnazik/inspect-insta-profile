@@ -11,4 +11,4 @@ MAX_SLEEP_TIME: int = 20
 HEADLESS: bool = False
 
 # Set the target account username
-TARGET_ACCOUNT: str = "samtufail726"
+TARGET_ACCOUNT: str = "faisalnazik"
