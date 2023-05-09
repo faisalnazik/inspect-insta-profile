@@ -3,7 +3,6 @@ from utils import pause
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from decorators import log_decorator
-from typing import List
 
 
 class Driver:
@@ -50,12 +49,7 @@ class Driver:
 class Bot:
     def __init__(self, driver):
         self.driver = driver
-        self.username = config.USERNAME
-        self.password = config.PASSWORD
         self.target_account = config.TARGET_ACCOUNT
-
-        self.target_account_followers: List[str] = []
-        self.target_account_following: List[str] = []
 
     @log_decorator
     def get_url(self, url: str) -> None:
